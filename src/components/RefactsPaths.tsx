@@ -35,9 +35,9 @@ const RefactsPaths: React.FC = () => {
   }, [option, selectedRepo]);
 
   return (
-    <Flex bg="white" w="100%">
+    <Flex bg="white" width="100%" boxSizing="border-box" display="flex">
       <Chart
-        width={'1200px'}
+        width={'1020px'}
         options={{
           chart: {
             type: 'bar',

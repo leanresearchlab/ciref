@@ -107,14 +107,16 @@ const Profile: React.FC = () => {
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent width="100vw">
           <ModalHeader>Adicionar Repositórios</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
             <Text>Você ainda pode adicionar estes repositórios:</Text>
-            <HStack mt="8">
+            <HStack mt="8" display="flex" flexDirection="column" gap="1">
               {repos.map((repo) => (
                 <Button
+                  bg="transparent"
+                  w="100%"
                   key={repo.id}
                   onClick={() => (!isSelected(repo) ? add(repo) : remove(repo))}
                   leftIcon={isSelected(repo) && <RiCheckLine />}

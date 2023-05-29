@@ -117,7 +117,7 @@ const Home: React.FC = () => {
   }, [selectedRepo]);
 
   return (
-    <Box margin={0} padding={0} boxSizing="border-box" display="flex">
+    <Box margin={0} padding={0} boxSizing="border-box" display="flex" width="100">
       <Box
         bg="white"
         width="30vw"
