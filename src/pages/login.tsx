@@ -69,8 +69,7 @@ export default function Home() {
             marginBottom="8"
             textAlign="center"
           >
-            Bem vindo(a) à ferramenta feita para você e as refatorações em seus
-            projetos JAVA!
+            Welcome to the tool designed for you and the refactoring of your JAVA projects!
           </Text>
           <Text
             marginBottom="4"
@@ -81,7 +80,7 @@ export default function Home() {
               color: '$gray600',
             }}
           >
-            Clique abaixo para se autenticar com o Github
+            Click below to authenticate with GitHub
           </Text>
           <Button
             onClick={() => signIn('github')}
@@ -91,7 +90,7 @@ export default function Home() {
             {/* <LeftAdornment>
               <RiGithubFill size={20}/>
             </LeftAdornment> */}
-            Conectar com o github
+            Connect with GitHub
           </Button>
         </div>
       </Box>

@@ -107,7 +107,7 @@ const RefactsOrderDrawer: React.FC = () => {
         variant="solid"
         size="md"
       >
-        Priorizar refatorações
+        Refactorings weights
       </Button>
 
       <Drawer
@@ -123,7 +123,7 @@ const RefactsOrderDrawer: React.FC = () => {
         <DrawerOverlay />
         <DrawerContent>
           <DrawerCloseButton />
-          <DrawerHeader>Importância das refatorações</DrawerHeader>
+          <DrawerHeader>The importance of refactoring</DrawerHeader>
 
           <DrawerBody>
             <VStack w="100%">
@@ -134,8 +134,8 @@ const RefactsOrderDrawer: React.FC = () => {
                 variant="solid"
               >
                 <AlertIcon />
-                Abaixo, selecione os respectivos pesos para determinar a
-                relevância dos tipos de refatoração dentro deste projeto
+                Below, select the respective weights to determine 
+                the relevance of the types of refactoring within this project.
               </Alert>
               {[
                 'Move',
@@ -197,14 +197,14 @@ const RefactsOrderDrawer: React.FC = () => {
                 onClose();
               }}
             >
-              Cancelar
+              Cancel
             </Button>
             <Button
               colorScheme="primary"
               isLoading={loading}
               onClick={() => handleCreateWeights()}
             >
-              Salvar ordem
+              Save
             </Button>
           </DrawerFooter>
         </DrawerContent>

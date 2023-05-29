@@ -55,14 +55,14 @@ const RefactByAuthorsPoints: React.FC = () => {
   return (
     <Flex w="20%" h="auto">
       <Box w="100%" bg="white" borderRadius="md" p="4">
-        <Text fontWeight="semibold">Refatorações</Text>
-        <Text fontSize="smaller">Refatorações por pontos</Text>
+        <Text fontWeight="semibold">Refactorings</Text>
+        <Text fontSize="smaller">Refactorings by points</Text>
         {data?.length && (
           <Flex p="4" flexDir="column" align={'center'}>
             <Avatar src={data[0]?.user.avatar} size="xl" />
             <Text fontWeight="medium">{data[0]?.user.login}</Text>
             <Badge variant="subtle" colorScheme="green">
-              {`${data[0]?.total} pontos`}
+              {`${data[0]?.total} points`}
             </Badge>
           </Flex>
         )}
@@ -82,7 +82,7 @@ const RefactByAuthorsPoints: React.FC = () => {
                 ))}
             </VStack>
             <Button size="sm" mt="4" w="100%" variant="outline">
-              Ver todos
+              View all
             </Button>
           </>
         )}

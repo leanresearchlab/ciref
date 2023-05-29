@@ -58,25 +58,25 @@ const TimeWindows: React.FC = () => {
           isActive={option === 'allProject'}
           onClick={() => handleSelectTimeWindow('allProject')}
         >
-          Todo o projeto
+          All
         </Button>
         <Button
           isActive={option === 'last3months'}
           onClick={() => handleSelectTimeWindow('last3months')}
         >
-          Últimos 3 meses
+          Last 3 months
         </Button>
         <Button
           isActive={option === 'thisMonth'}
           onClick={() => handleSelectTimeWindow('thisMonth')}
         >
-          Esse mês
+          This month
         </Button>
         <Button
           isActive={option === 'thisWeek'}
           onClick={() => handleSelectTimeWindow('thisWeek')}
         >
-          Essa semana
+          This week
         </Button>
       </ButtonGroup>
     </Flex>

@@ -46,7 +46,7 @@ const RefactContainer: React.FC<> = () => {
   return (
     <Flex flexDirection="column">
       <Select
-        placeholder="Selecione o repositório"
+        placeholder="Please select the repository"
         onChange={(e) => {
           setSelectedRepo(e.target.value);
           setSelectedRepoInfo(e.target.value);

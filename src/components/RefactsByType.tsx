@@ -63,8 +63,8 @@ const RefactsByType: React.FC = () => {
     <Box p="4" bg="white" borderRadius="md" w="100%">
       <Flex w="100%" align={'center'}>
         <Box>
-          <Text fontWeight="semibold">Refatorações</Text>
-          <Text fontSize="smaller">Refatorações por tipo de refatoração</Text>
+          <Text fontWeight="semibold">Refactorings</Text>
+          <Text fontSize="smaller">Refactorings by type of refactoring</Text>
         </Box>
         <Spacer />
         <Box>
@@ -158,7 +158,7 @@ const RefactsByType: React.FC = () => {
           {!Object.keys(data.original).length && (
             <Center flexDir={'column'}>
               <Image src="/assets/empty-box.png" width={100} height={100} />{' '}
-              <Text>Sem dados</Text>
+              <Text>No data available</Text>
             </Center>
           )}
           {Object.keys(data.original).length && (
@@ -167,7 +167,7 @@ const RefactsByType: React.FC = () => {
               <VStack w="100%" mt="4">
                 {selectedIndex === -1 && (
                   <Center>
-                    <Text>Selecione um tipo ao lado</Text>
+                    <Text>Please select a type on the side</Text>
                   </Center>
                 )}
                 {selectedIndex !== -1 &&
@@ -184,7 +184,7 @@ const RefactsByType: React.FC = () => {
                             variant="outline"
                             textAlign="center"
                             colorScheme="purple"
-                          >{`${i[1]} Refatorações`}</Badge>
+                          >{`${i[1]} Refactorings`}</Badge>
                         </Box>
                       </Flex>
                     ))}

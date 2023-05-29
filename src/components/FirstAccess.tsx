@@ -68,10 +68,9 @@ const FirstAccess: React.FC<FirstAccessProps> = ({ setFirstAccess }) => {
       justifyContent="center"
       alignItems="center"
     >
-      <Text fontSize="2xl">Bem vindo! Este é seu primeiro acesso!</Text>
+      <Text fontSize="2xl">Welcome! This is your first access!</Text>
       <Text color={'#98A2B3'}>
-        Escolha abaixo dentre os seus repositórios JAVA, quais você deseja que o
-        ciref seja executado.
+        Please choose below among your JAVA repositories which ones you would like Ciref to run on.
       </Text>
       <HStack mt="8" display="grid" gridTemplateColumns="repeat(4, 1fr)" gap="1rem">
         {repos.map((repo) => (
@@ -91,7 +90,7 @@ const FirstAccess: React.FC<FirstAccessProps> = ({ setFirstAccess }) => {
         isLoading={loading}
         onClick={() => handleCreateRepos()}
       >
-        Enviar
+        Send
       </Button>
     </Flex>
   );

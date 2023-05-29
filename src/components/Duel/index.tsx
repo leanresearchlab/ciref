@@ -93,9 +93,9 @@ const Duel: React.FC = () => {
     <Flex bg="white" p="4" borderRadius="md">
       <VStack>
         <Box>
-          <Text fontWeight="semibold">Duelo de desenvolvedores</Text>
+          <Text fontWeight="semibold">Duel of developers</Text>
           <Text fontSize="smaller">
-            Compare as refatorações feitas pelos devs
+            Compare the refactorings made by the developers
           </Text>
         </Box>
         <Divider />

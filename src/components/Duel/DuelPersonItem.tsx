@@ -65,7 +65,7 @@ const DuelPersonItem: React.FC<DuelPersonItemProps> = ({ login }) => {
         <Tag>
           <Tag size="sm" variant="solid" colorScheme="purple">
             <TagLeftIcon boxSize="16px" as={RiSwordLine} />
-            <TagLabel>{isChallenged ? 'Desafiado' : 'Desafiante'}</TagLabel>
+            <TagLabel>{isChallenged ? 'Challenged' : 'Challenger'}</TagLabel>
           </Tag>
         </Tag>
       )}

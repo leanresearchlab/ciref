@@ -103,15 +103,15 @@ const Profile: React.FC = () => {
         leftIcon={<RiGitRepositoryLine />}
         disabled={!repos.length}
       >
-        Add Repositório
+        Add Repository
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent width="100vw">
-          <ModalHeader>Adicionar Repositórios</ModalHeader>
+          <ModalHeader>Add repository</ModalHeader>
           <ModalCloseButton />
           <ModalBody>
-            <Text>Você ainda pode adicionar estes repositórios:</Text>
+            <Text>You can still add these repositories:</Text>
             <HStack mt="8" display="flex" flexDirection="column" gap="1">
               {repos.map((repo) => (
                 <Button
@@ -137,7 +137,7 @@ const Profile: React.FC = () => {
               onClick={() => handleCreateRepos()}
               colorScheme="purple"
             >
-              Adicionar repositório
+              Add
             </Button>
           </ModalFooter>
         </ModalContent>
@@ -152,9 +152,9 @@ const Profile: React.FC = () => {
             @{session?.user.username}
           </Text>
         </Box>
-        <Tooltip label="Sair da aplicação">
+        <Tooltip label="Exit the application">
           <IconButton
-            aria-label="sair"
+            aria-label="exit"
             colorScheme="red"
             variant="ghost"
             onClick={() => signOut()}

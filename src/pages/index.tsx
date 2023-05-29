@@ -141,7 +141,7 @@ const Home: React.FC = () => {
             justifyContent="space-between"
           >
             <Text fontSize="2xl" fontWeight="medium">
-              Repositórios
+              Repositories
             </Text>
             <Flex
               bg="primary.50"
@@ -170,7 +170,7 @@ const Home: React.FC = () => {
               {loading && (
                 <Tag size="lg" variant="subtle">
                   <TagLeftIcon boxSize="12px" as={Spinner} />
-                  <TagLabel>Sincronizando</TagLabel>
+                  <TagLabel>Syncing</TagLabel>
                 </Tag>
               )}
               <RefactsOrderDrawer />

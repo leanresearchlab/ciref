@@ -54,9 +54,9 @@ const RefactsByTime: React.FC = () => {
   return (
     <Flex w="100%" bg="white" p="4" borderRadius="md" flexDirection="column">
       <Box>
-        <Text fontWeight="semibold">Refatorações</Text>
+        <Text fontWeight="semibold">Refactorings</Text>
         <Text fontSize="smaller">
-          Refatorações conforme o andamento do projeto
+          Refactorings according to the progress of the project
         </Text>
       </Box>
       <Chart
@@ -89,12 +89,12 @@ const RefactsByTime: React.FC = () => {
               },
             },
           },
-          noData: { text: 'Sem dados' },
+          noData: { text: 'No data available' },
           xaxis: {
             categories: data.dates,
           },
         }}
-        series={[{ name: 'Refatorações executadas', data: data.values ?? [] }]}
+        series={[{ name: 'Executed refactorings', data: data.values ?? [] }]}
         type="area"
         height={300}
       />

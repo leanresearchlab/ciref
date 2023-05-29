@@ -61,8 +61,8 @@ const RefactByAuthors: React.FC = () => {
         {isFetching && <Spinner/>}
         {!isFetching && (
           <>
-            <Text fontWeight="semibold">Refatorações</Text>
-            <Text fontSize="smaller">Refatorações em números absolutos</Text>
+            <Text fontWeight="semibold">Refactorings</Text>
+            <Text fontSize="smaller">Refactorings in abosolute numbers</Text>
             {!data.length && (
               <Center flexDirection="column" p="4">
                 <Image
@@ -70,7 +70,7 @@ const RefactByAuthors: React.FC = () => {
                   width={100}
                   height={100}
                 ></Image>
-                <Text color="gray.400">Sem refatorações identificadas</Text>
+                <Text color="gray.400">No refactorings identified</Text>
               </Center>
             )}
             {!!data.length && (
@@ -78,7 +78,7 @@ const RefactByAuthors: React.FC = () => {
                 <Avatar src={data[0]?.user.avatar} size="xl" />
                 <Text fontWeight="medium">{data[0]?.user.login}</Text>
                 <Badge variant="subtle" colorScheme="green">
-                  {`${data[0]?.total} Refatorações`}
+                  {`${data[0]?.total} Refactorings`}
                 </Badge>
               </Flex>
             )}
@@ -99,7 +99,7 @@ const RefactByAuthors: React.FC = () => {
                 </VStack>
                 <Spacer/>
                 <Button size="sm" mt="4" w="100%" variant="outline">
-                  Ver todos
+                  View all
                 </Button>
               </>
             )}

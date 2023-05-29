@@ -70,7 +70,7 @@ const RefactItem: React.FC<RefactItemProps> = ({ refact, repo }) => {
     const newCommit = await apiGithub.post(
       `/repos/${owner}/${repoName}/git/commits`,
       {
-        message: 'Teste de commit',
+        message: 'Commit test',
         tree: currentCommit.data.tree.sha,
         parents: [currentCommit.data.sha],
       }
@@ -102,9 +102,9 @@ const RefactItem: React.FC<RefactItemProps> = ({ refact, repo }) => {
       toast({
         status: 'error',
         variant: 'solid',
-        title: 'Não conseguimos encontrar a branch :/',
+        title: `We couldn't find the branch :/`,
         description:
-          'Confira se criou uma branch com o nome FIX123-move-method',
+          'Please check if you have created a branch with the name FIX123-move-method',
       });
     }
   };
@@ -134,25 +134,25 @@ const RefactItem: React.FC<RefactItemProps> = ({ refact, repo }) => {
       <Modal closeOnOverlayClick={false} isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
-          <ModalHeader>Criação da PR</ModalHeader>
+          <ModalHeader>PR creation</ModalHeader>
           <ModalCloseButton />
           <ModalBody pb={6}>
-            <Text>Vamos começar!</Text>
+            <Text>Let's get started!</Text>
             <Text>
-              Copie o nome da branch disponibilizado abaixo, e crie a branch{' '}
+              Please copy the branch name provided below and create the branch{' '}
               <Link
                 color="gray.400"
                 href={`${repo[0].html_url}/branches`}
                 isExternal
               >
-                aqui
+                here
               </Link>
             </Text>
             <VStack>
               <InputGroup size="md">
                 <Input pr="4.5rem" value="FIX123-move-method" readOnly />
                 <InputRightElement>
-                  <Tooltip label="Copiar">
+                  <Tooltip label="Copy">
                     <IconButton
                       size="sm"
                       icon={<RiFileCopyFill />}
@@ -160,9 +160,9 @@ const RefactItem: React.FC<RefactItemProps> = ({ refact, repo }) => {
                         toast({
                           status: 'success',
                           variant: 'left-accent',
-                          title: 'Nome da branch copiado com sucesso!',
+                          title: 'Successfully copied branch name!',
                           description:
-                            'Agora você já pode criar a branch com esse valor',
+                            'Now you can create the branch with this value',
                         });
                         navigator.clipboard.writeText('FIX123-move-method');
                       }}
@@ -172,7 +172,7 @@ const RefactItem: React.FC<RefactItemProps> = ({ refact, repo }) => {
               </InputGroup>
               {!findBranch && (
                 <Button onClick={() => findExistingBranches()} w="100%">
-                  Já criei a branch
+                  I have already created the branch
                 </Button>
               )}
               {findBranch && (
@@ -187,11 +187,10 @@ const RefactItem: React.FC<RefactItemProps> = ({ refact, repo }) => {
                 >
                   <AlertIcon boxSize="30px" mr={0} />
                   <AlertTitle mt={4} mb={1} fontSize="md">
-                    Tudo certo!
+                    Very well!
                   </AlertTitle>
                   <AlertDescription maxWidth="x-small">
-                    Para prosseguir, basta clicar no botão abaixo 'Criar Pull
-                    Request'
+                    To proceed, simply click on the button below 'Create Pull Request'.
                   </AlertDescription>
                 </Alert>
               )}
@@ -201,14 +200,14 @@ const RefactItem: React.FC<RefactItemProps> = ({ refact, repo }) => {
           <ModalFooter>
             <HStack>
               <Button onClick={onClose} variant="ghost">
-                Cancelar
+                Cancel
               </Button>{' '}
               <Button
                 colorScheme="gray"
                 mr={3}
                 onClick={() => handleCreatePR()}
               >
-                Criar Pull Request
+                Create Pull Request
               </Button>
             </HStack>
           </ModalFooter>
