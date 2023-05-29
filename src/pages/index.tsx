@@ -159,7 +159,6 @@ const Home: React.FC = () => {
             <RepoItem repoName={item.repoName} repoUrl={item.repoUrl} />
           ))}
         </VStack>
-        <Spacer />
         <Profile />
       </Box>
       <Flex p="8" w="100%">
