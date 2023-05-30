@@ -85,55 +85,6 @@ const RefactsPaths: React.FC = () => {
         type="bar"
         height={350}
       />
-      {selectedIndex !== -1 && (
-        <Chart
-          options={{
-            chart: {
-              height: 350,
-              type: 'radar',
-              dropShadow: {
-                enabled: true,
-                blur: 1,
-                left: 1,
-                top: 1,
-              },
-            },
-            plotOptions: {
-              radar: {
-                polygons: {
-                  strokeColor: '#e8e8e8',
-                  fill: {
-                    colors: ['#f8f8f8', '#fff'],
-                  },
-                },
-              },
-            },
-            stroke: {
-              width: 2,
-            },
-            fill: {
-              opacity: 0.1,
-            },
-            yaxis: { show: false },
-            xaxis: {
-              categories: categories,
-            },
-          }}
-          series={[
-            {
-              name: Object.keys(data)[selectedIndex] ?? 'opa',
-              data:
-                Object.keys(data).length > 0
-                  ? Object.entries(Object.values(data)[selectedIndex]).map(
-                      (i) => i[1]
-                    )
-                  : [],
-            },
-          ]}
-          type="radar"
-          height={350}
-        />
-      )}
     </Flex>
   );
 };
