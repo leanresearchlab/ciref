@@ -88,7 +88,7 @@ const Profile: React.FC = () => {
           username: session?.user.username,
         })
       )
-    ).then((r) => toast({ title: 'Repositórios adicionados com sucesso' }));
+    ).then((r) => toast({ title: 'Repositories added successfully' }));
     setLoading(false);
     onClose();
   }

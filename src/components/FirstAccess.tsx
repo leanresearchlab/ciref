@@ -47,7 +47,7 @@ const FirstAccess: React.FC<FirstAccessProps> = ({ setFirstAccess }) => {
         })
       )
     ).then((r) => {
-      toast({ title: 'Repositórios adicionados com sucesso' });
+      toast({ title: 'Repositories added successfully' });
       queryClient.invalidateQueries()
       router.reload();
     });
