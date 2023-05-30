@@ -10,7 +10,7 @@ export default function Document() {
           href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600&display=swap"
           rel="stylesheet"
         />
-        <title>CIref</title>
+        <link rel="icon" href="/assets/logo.svg" />
       </Head>
       <body>
         <Main />
