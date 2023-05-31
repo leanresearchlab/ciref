@@ -36,7 +36,7 @@ const RefactsByTime: React.FC = () => {
           let values = [];
           res.data.forEach((i) => {
             dates.push(
-              format(new Date(i.commit_date), "dd 'de' MMM,yyyy", {
+              format(new Date(i.commit_date), "dd 'de' MMM, yyyy", {
                 locale: ptBr,
               })
             );
