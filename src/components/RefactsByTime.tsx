@@ -71,6 +71,9 @@ const RefactsByTime: React.FC = () => {
           },
           dataLabels: {
             enabled: false,
+            style: {
+              fontSize: "14px"
+            }
           },
           theme: { monochrome: { enabled: true, color: '#6E51F2' } },
 
