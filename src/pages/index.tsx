@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { getSession, useSession } from 'next-auth/react';
-import { backendApi } from '@/services/api';
+import { apiGithub, backendApi } from '@/services/api';
 import {
   Box,
   Button,
@@ -93,18 +93,28 @@ const Home: React.FC = () => {
     },
     { initialData: [] }
   );
+
   useEffect(() => {
     setRepos(alreadyRepos);
   }, [alreadyRepos]);
 
+  async function fetchBranchName(repository: string): Promise<string> {
+    const response = await apiGithub.get(`/repos/${session?.user.username}/${repository}/branches`);
+    return response.data[0].name;
+  }
+  
   useEffect(() => {
     if (selectedRepo !== '') {
       setLoading(true);
+      
+      const repository = selectedRepo.split('/')[4].split('.')[0];
+      const branch = fetchBranchName(repository);
+
       backendApi
         .post('/refact', {
           username: session?.user.username,
           url: selectedRepo,
-          branch: 'master',
+          branch,
         })
         .then((e) => {
           setLoading(false);
@@ -115,6 +125,7 @@ const Home: React.FC = () => {
         .then((a) => setRefactsTypes(a.data));
     }
   }, [selectedRepo]);
+
 
   return (
     <Box margin={0} padding={0} boxSizing="border-box" display="flex" width="100">
