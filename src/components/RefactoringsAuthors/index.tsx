@@ -1,12 +1,6 @@
 import { backendApi } from '@/services/api';
 import { useSelectRepo } from '@/stores/repo';
-import Chart from 'react-apexcharts';
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
   Avatar,
   Badge,
   Box,
@@ -25,8 +19,7 @@ import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { useTimeWindow } from '@/stores/timeWindow';
 
-
-const RefactByAuthors: React.FC = () => {
+const RefactoringsAuthors: React.FC = () => {
   const { repos, selectedRepo } = useSelectRepo(({ repos, selectedRepo }) => ({
     repos,
     selectedRepo,
@@ -110,4 +103,4 @@ const RefactByAuthors: React.FC = () => {
   );
 };
 
-export default RefactByAuthors;
+export default RefactoringsAuthors;

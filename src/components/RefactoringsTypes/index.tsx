@@ -3,7 +3,6 @@ import { useSelectRepo } from '@/stores/repo';
 import { useTimeWindow } from '@/stores/timeWindow';
 import { useQuery } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
-import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import {
   Badge,
@@ -11,7 +10,6 @@ import {
   Center,
   Divider,
   Flex,
-  HStack,
   Spacer,
   Tag,
   TagLabel,
@@ -22,7 +20,7 @@ import Image from 'next/image';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-const RefactsByType: React.FC = () => {
+const RefactoringsTypes: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const { repos, selectedRepo } = useSelectRepo(({ repos, selectedRepo }) => ({
     repos,
@@ -197,4 +195,4 @@ const RefactsByType: React.FC = () => {
   );
 };
 
-export default RefactsByType;
+export default RefactoringsTypes;

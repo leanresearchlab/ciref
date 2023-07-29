@@ -7,9 +7,10 @@ import React, { useEffect } from 'react';
 import { format } from 'date-fns';
 import ptBr from 'date-fns/locale/pt-BR';
 import dynamic from 'next/dynamic';
+
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-const RefactsByTime: React.FC = () => {
+const RefactorHistory: React.FC = () => {
   const { repos, selectedRepo } = useSelectRepo(({ repos, selectedRepo }) => ({
     repos,
     selectedRepo,
@@ -105,4 +106,4 @@ const RefactsByTime: React.FC = () => {
   );
 };
 
-export default RefactsByTime;
+export default RefactorHistory;

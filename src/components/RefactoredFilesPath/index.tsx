@@ -10,7 +10,7 @@ const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
 // import { Container } from './styles';
 
-const RefactsPaths: React.FC = () => {
+const RefactoredFilesPath: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const selectedRepo = useSelectRepo((state) => state.selectedRepo);
   const [startDate, endDate, option] = useTimeWindow((state) => [
@@ -89,4 +89,4 @@ const RefactsPaths: React.FC = () => {
   );
 };
 
-export default RefactsPaths;
+export default RefactoredFilesPath;

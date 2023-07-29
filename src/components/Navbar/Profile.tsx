@@ -28,7 +28,6 @@ import {
   RiGitRepositoryLine,
   RiLogoutCircleRLine,
 } from 'react-icons/ri';
-import FirstAccess from '../FirstAccess';
 
 // import { Container } from './styles';
 

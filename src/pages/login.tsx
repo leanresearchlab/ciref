@@ -8,7 +8,7 @@ export async function getServerSideProps(context) {
   if (session) {
     return {
       redirect: {
-        destination: '/',
+        destination: '/dashboard',
         permanent: false,
       },
     };
@@ -19,7 +19,7 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default function Home() {
+export default function Login() {
   return (
     <Box
       css={{
