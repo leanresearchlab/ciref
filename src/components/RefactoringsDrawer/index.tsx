@@ -152,6 +152,7 @@ const RefactoringsDrawer: React.FC = () => {
                   w="100%"
                   columns={2}
                   h="12"
+                  key={i}
                 >
                   <Text>{i}</Text>
                   <Slider

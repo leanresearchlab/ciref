@@ -32,6 +32,7 @@ import RefactoringsDrawer from '@/components/RefactoringsDrawer';
 import RefactoringsPoints from '@/components/RefactoringsPoints';
 import RefactoredFilesPath from '@/components/RefactoredFilesPath';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { useRouter } from 'next/router';
 export async function getServerSideProps(context) {
   const session = await getSession(context);
 
@@ -51,10 +52,10 @@ export async function getServerSideProps(context) {
   };
 }
 
-const Dashboard: React.FC = () => {
+function Dashboard() {
   const { data: session } = useSession();
+  const { push } = useRouter();
   const [firstAccess, setFirstAccess] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [startDate, endDate] = useTimeWindow((state) => [
     state.startDate,
     state.endDate,
@@ -67,8 +68,6 @@ const Dashboard: React.FC = () => {
       setRepos,
     })
   );
-  const queryClient = useQueryClient();
-  const [refactsTypes, setRefactsTypes] = useState(false);
 
   useEffect(() => {
     if (session?.user) {
@@ -97,104 +96,25 @@ const Dashboard: React.FC = () => {
     setRepos(alreadyRepos);
   }, [alreadyRepos]);
 
+  const firstRepositoryId = repos.length > 0 ? repos[0].repoId : null;
+
   useEffect(() => {
-    if (selectedRepo !== '') {
-      setLoading(true);
-      backendApi
-        .post('/refact', {
-          username: session?.user.username,
-          url: selectedRepo,
-        })
-        .then((e) => {
-          setLoading(false);
-          queryClient.invalidateQueries();
-        });
-      backendApi
-        .get(`/info/`, { params: { url: selectedRepo } })
-        .then((a) => setRefactsTypes(a.data));
+    if (firstRepositoryId) {
+      push(`/project/${firstRepositoryId}`)
     }
-  }, [selectedRepo]);
+  }, [firstRepositoryId])
 
   return (
-    <Box margin={0} padding={0} boxSizing="border-box" display="flex" width="100">
-      <Box
-        bg="white"
-        width="30vw"
-        maxWidth="300px"
-        display="flex"
-        flexDirection="column"
-        alignItems="center"
-        outline="1px solid"
-        outlineColor="gray.300"
-      >
-        <Flex flexDir="column" p="4" w="100%">
-          <Image src="/assets/logo.svg" width={80} height={80} />
-        </Flex>
-        <Divider />
-
-        <VStack w="100%">
-          <Flex
-            w="100%"
-            p="4"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Text fontSize="2xl" fontWeight="medium">
-              Repositories
-            </Text>
-            <Flex
-              bg="primary.50"
-              color="primary.500"
-              w="8"
-              h="8"
-              borderRadius="xl"
-              justifyContent="center"
-              alignItems="center"
-            >
-              {repos.length}
-            </Flex>
-          </Flex>
-          {repos.map((item) => (
-            <RepoItem repoName={item.repoName} repoUrl={item.repoUrl} />
-          ))}
-        </VStack>
-        <Profile />
-      </Box>
-      <Flex p="8" w="100%">
-        {repos.length ? (
-          <Flex flexDir="column" gap={4} w="100%">
-            <Flex w="100%">
-              <TimeWindow />
-              <Spacer></Spacer>
-              {loading && (
-                <Tag size="lg" variant="subtle">
-                  <TagLeftIcon boxSize="12px" as={Spinner} />
-                  <TagLabel>Syncing</TagLabel>
-                </Tag>
-              )}
-              <RefactoringsDrawer />
-            </Flex>
-            <Flex gap={4} w="100%" flex={1}>
-              <RefactorHistory />
-            </Flex>
-            <Flex gap={4} w="100%">
-              <RefactoringsAuthors />
-              <RefactoringsTypes />
-              <RefactoringsPoints />
-            </Flex>
-            <Flex gap={4} w="100%">
-              <RefactoredFilesPath />
-            </Flex>
-            <Flex gap={4} w="100%">
-              <Duel />
-            </Flex>
-          </Flex>
-        ) : (
-          <FirstAccess setFirstAccess={setFirstAccess} />
-        )}
-      </Flex>
-    </Box>
-  );
+    <div>
+      {repos.length ? (
+        <Tag size="lg" variant="subtle">
+          <TagLeftIcon boxSize="12px" as={Spinner} />
+        </Tag>
+      ) : (
+        <FirstAccess setFirstAccess={setFirstAccess} />
+      )}
+    </div>
+  )
 };
 
 export default Dashboard;

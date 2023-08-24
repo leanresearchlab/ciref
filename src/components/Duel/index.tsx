@@ -54,9 +54,18 @@ const Duel: React.FC = () => {
     async () => {
       const findRepoInfo = repos.find((r) => r.repoUrl === selectedRepo);
 
-      return backendApi
-        .get(`/repo/people/${findRepoInfo.repoId}`)
-        .then((r) => r.data);
+      if(!findRepoInfo) {
+        return { initialData: [] };
+      }
+
+      try {
+        const response = await backendApi.get(`/repo/people/${findRepoInfo.repoId}`);
+
+        return response.data;
+      } catch(error) {
+        console.error('Error fetching data from API');
+        return { initialData: [] };
+      }
     },
     { initialData: [] }
   );
@@ -64,6 +73,7 @@ const Duel: React.FC = () => {
   useEffect(() => {
     if (challenger && challenged) {
       const findRepoInfo = repos.find((r) => r.repoUrl === selectedRepo);
+
       backendApi
         .post('/duel', {
           repoUrl: findRepoInfo.repoUrl,
@@ -100,7 +110,7 @@ const Duel: React.FC = () => {
         </Box>
         <Divider />
         <VStack w="100%" spacing="4">
-          {data.length && data.map((i) => <DuelPersonItem login={i.login} />)}
+          {data.length && data.map((i) => <DuelPersonItem key={i.login} login={i.login} />)}
         </VStack>
       </VStack>
       <Spacer />

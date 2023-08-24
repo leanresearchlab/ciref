@@ -34,14 +34,22 @@ const RefactoringsAuthors: React.FC = () => {
     async () => {
       const findRepoInfo = repos.find((r) => r.repoUrl === selectedRepo);
       
-      return backendApi
-        .get('/refacts/users', {
+      if (!findRepoInfo) {
+        return { initialData: [] };
+      }
+      try {
+        const response = await backendApi.get('/refacts/users', {
           params: {
             repoUrl: findRepoInfo.repoUrl,
             startDate,endDate
           },
-        })
-        .then((res) => res.data);
+        });
+
+        return response.data;
+      } catch (error) {
+        console.error('Error fetching data from API');
+        return { initialData: [] };
+      }
     },
     { initialData: [] }
   );
@@ -81,7 +89,7 @@ const RefactoringsAuthors: React.FC = () => {
                 <VStack p="2" spacing="4">
                   {data &&
                     data.slice(1, data.length).map((i) => (
-                      <HStack w="100%">
+                      <HStack w="100%" key={i.user.login}>
                         <Avatar size="xs" src={i.user.avatar} />
                         <Text fontSize={'sm'}>{i?.user.login}</Text>
                         <Badge variant="subtle" colorScheme="green">

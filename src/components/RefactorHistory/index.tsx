@@ -24,33 +24,50 @@ const RefactorHistory: React.FC = () => {
     ['refacts-by-time'],
     async () => {
       const findRepoInfo = repos.find((r) => r.repoUrl === selectedRepo);
-      return backendApi
-        .get('/refacts/time', {
+
+      if (!findRepoInfo) {
+        return { dates: [], value: [] };
+      }
+      try {
+        const response = await backendApi.get('/refacts/time', {
           params: {
             repoId: findRepoInfo.repoId,
             startDate,
             endDate,
           },
-        })
-        .then((res) => {
-          let dates = [];
-          let values = [];
-          res.data.forEach((i) => {
-            dates.push(
-              format(new Date(i.commit_date), "dd 'de' MMM, yyyy", {
-                locale: ptBr,
-              })
-            );
-            values.push(i._count.id);
-          });
-          return { dates, values };
         });
+
+        const dates = [];
+        const values = [];
+
+        response.data.forEach((i) => {
+          dates.push(
+            format(new Date(i.commit_date), "dd 'de' MMM, yyyy", {
+              locale: ptBr,
+            })
+          );
+          values.push(i._count.id);
+        });
+
+        return { dates, values };
+      } catch (error) {
+        console.error('Error fetching data from API');
+        return { dates: [], values: [] };
+      }
     },
-    { initialData: { dates: [], values: [] } }
+    { initialData: { dates: [], values: [] }, refetchInterval: 30000 }
   );
-  useEffect(() => {
-    refetch();
-  }, [option, selectedRepo]);
+  // useEffect(() => {
+  //   const interval = setInterval(() => {
+  //     refetch();
+  //   }, 30000);
+
+  //   return () => {
+  //     clearInterval(interval);
+  //   }
+  // }, [option, startDate, endDate, selectedRepo]);
+
+  console.log(data)
 
   return (
     <Flex w="100%" bg="white" p="4" borderRadius="md" flexDirection="column">
@@ -60,48 +77,48 @@ const RefactorHistory: React.FC = () => {
           Refactorings according to the progress of the project
         </Text>
       </Box>
-      <Chart
-        options={{
-          chart: {
-            width: '100%',
-            height: 300,
-            type: 'area',
-            zoom: {
-              enabled: false,
-            },
-          },
-          dataLabels: {
-            enabled: false,
-            style: {
-              fontSize: "8px"
-            }
-          },
-          theme: { monochrome: { enabled: true, color: '#6E51F2' } },
-
-          stroke: {
-            curve: 'stepline',
-          },
-          grid: {
-            xaxis:{
-              lines:{
-                show:true
-              }
-            },
-            yaxis: {
-              lines: {
-                show: true,
+        <Chart
+          options={{
+            chart: {
+              width: '100%',
+              height: 300,
+              type: 'area',
+              zoom: {
+                enabled: false,
               },
             },
-          },
-          noData: { text: 'No data available' },
-          xaxis: {
-            categories: data.dates,
-          },
-        }}
-        series={[{ name: 'Executed refactorings', data: data.values ?? [] }]}
-        type="area"
-        height={300}
-      />
+            dataLabels: {
+              enabled: false,
+              style: {
+                fontSize: "8px"
+              }
+            },
+            theme: { monochrome: { enabled: true, color: '#6E51F2' } },
+  
+            stroke: {
+              curve: 'stepline',
+            },
+            grid: {
+              xaxis: {
+                lines: {
+                  show: true
+                }
+              },
+              yaxis: {
+                lines: {
+                  show: true,
+                },
+              },
+            },
+            noData: { text: 'No data available' },
+            xaxis: {
+              categories: data.dates,
+            },
+          }}
+          series={[{ name: 'Executed refactorings', data: data.values ?? [] }]}
+          type="area"
+          height={300}
+        />
     </Flex>
   );
 };

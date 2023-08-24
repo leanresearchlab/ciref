@@ -35,19 +35,26 @@ const RefactoringsTypes: React.FC = () => {
     ['refacts-by-type'],
     async () => {
       const findRepoInfo = repos.find((r) => r.repoUrl === selectedRepo);
-      return backendApi
-        .get('/info', {
+
+      if(!findRepoInfo) {
+        return { labels: [], series: [], original: {} };
+      }
+      try {
+        const response = await backendApi.get('/info', {
           params: {
             url: findRepoInfo.repoUrl,
             startDate,
             endDate,
           },
-        })
-        .then((res) => {
-          const labels = Object.keys(res.data);
-          const series = Object.values(res.data).map((i: any) => i.total);
-          return { labels, series, original: res.data };
         });
+        const labels = Object.keys(response.data);
+        const series = Object.values(response.data).map((i: any) => i.total);
+        
+        return { labels, series, original: response.data };
+      } catch(error) {
+        console.error('Error fetching data from API');
+        return { labels: [], series: [], original: {} };
+      }
     },
     { initialData: { labels: [], series: [], original: {} } }
   );
