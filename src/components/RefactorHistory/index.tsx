@@ -20,13 +20,13 @@ const RefactorHistory: React.FC = () => {
     state.endDate,
     state.option,
   ]);
-  const { data, isFetching, refetch } = useQuery(
+  const { data } = useQuery(
     ['refacts-by-time'],
     async () => {
       const findRepoInfo = repos.find((r) => r.repoUrl === selectedRepo);
 
       if (!findRepoInfo) {
-        return { dates: [], value: [] };
+        return { dates: [], values: [] };
       }
       try {
         const response = await backendApi.get('/refacts/time', {
@@ -57,17 +57,6 @@ const RefactorHistory: React.FC = () => {
     },
     { initialData: { dates: [], values: [] }, refetchInterval: 30000 }
   );
-  // useEffect(() => {
-  //   const interval = setInterval(() => {
-  //     refetch();
-  //   }, 30000);
-
-  //   return () => {
-  //     clearInterval(interval);
-  //   }
-  // }, [option, startDate, endDate, selectedRepo]);
-
-  console.log(data)
 
   return (
     <Flex w="100%" bg="white" p="4" borderRadius="md" flexDirection="column">
@@ -77,48 +66,48 @@ const RefactorHistory: React.FC = () => {
           Refactorings according to the progress of the project
         </Text>
       </Box>
-        <Chart
-          options={{
-            chart: {
-              width: '100%',
-              height: 300,
-              type: 'area',
-              zoom: {
-                enabled: false,
-              },
-            },
-            dataLabels: {
+      <Chart
+        options={{
+          chart: {
+            width: '100%',
+            height: 300,
+            type: 'area',
+            zoom: {
               enabled: false,
-              style: {
-                fontSize: "8px"
+            },
+          },
+          dataLabels: {
+            enabled: false,
+            style: {
+              fontSize: "8px"
+            }
+          },
+          theme: { monochrome: { enabled: true, color: '#6E51F2' } },
+
+          stroke: {
+            curve: 'stepline',
+          },
+          grid: {
+            xaxis: {
+              lines: {
+                show: true
               }
             },
-            theme: { monochrome: { enabled: true, color: '#6E51F2' } },
-  
-            stroke: {
-              curve: 'stepline',
-            },
-            grid: {
-              xaxis: {
-                lines: {
-                  show: true
-                }
-              },
-              yaxis: {
-                lines: {
-                  show: true,
-                },
+            yaxis: {
+              lines: {
+                show: true,
               },
             },
-            noData: { text: 'No data available' },
-            xaxis: {
-              categories: data.dates,
-            },
-          }}
-          series={[{ name: 'Executed refactorings', data: data.values ?? [] }]}
-          type="area"
-          height={300}
-        />
+          },
+          noData: { text: 'No data available' },
+          xaxis: {
+            categories: data.dates,
+          },
+        }}
+        series={[{ name: 'Executed refactorings', data: data.values ?? [] }]}
+        type="area"
+        height={300}
+      />
     </Flex>
   );
 };

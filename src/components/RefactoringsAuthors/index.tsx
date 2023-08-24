@@ -29,7 +29,7 @@ const RefactoringsAuthors: React.FC = () => {
     state.endDate,
     state.option
   ]);
-  const { data, isFetching,refetch } = useQuery(
+  const { data, isFetching } = useQuery(
     ['refacts-by-authors'],
     async () => {
       const findRepoInfo = repos.find((r) => r.repoUrl === selectedRepo);
@@ -51,10 +51,8 @@ const RefactoringsAuthors: React.FC = () => {
         return { initialData: [] };
       }
     },
-    { initialData: [] }
+    { initialData: [], refetchInterval: 30000 }
   );
-
-  useEffect(()=>{refetch()},[option,selectedRepo])
 
   return (
     <Flex w="20%">

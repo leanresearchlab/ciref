@@ -25,7 +25,7 @@ const RefactoringsPoints: React.FC = () => {
     state.endDate,
     state.option
   ]);
-  const { data, isFetching,refetch } = useQuery(
+  const { data } = useQuery(
     ['refacts-by-authors-points'],
     async () => {
       const findRepoInfo = repos.find((r) => r.repoUrl === selectedRepo);
@@ -48,11 +48,9 @@ const RefactoringsPoints: React.FC = () => {
         return { initialData: [] };
       }
     },
-    { initialData:[] }
+    { initialData:[], refetchInterval: 30000 }
   );
 
-  useEffect(()=>{refetch()},[option,selectedRepo])
-  
   return (
     <Flex w="20%" h="auto">
       <Box w="100%" bg="white" borderRadius="md" p="4">

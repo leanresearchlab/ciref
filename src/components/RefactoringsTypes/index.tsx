@@ -31,7 +31,7 @@ const RefactoringsTypes: React.FC = () => {
     state.endDate,
     state.option,
   ]);
-  const { data, isFetching, refetch } = useQuery(
+  const { data } = useQuery(
     ['refacts-by-type'],
     async () => {
       const findRepoInfo = repos.find((r) => r.repoUrl === selectedRepo);
@@ -56,14 +56,13 @@ const RefactoringsTypes: React.FC = () => {
         return { labels: [], series: [], original: {} };
       }
     },
-    { initialData: { labels: [], series: [], original: {} } }
+    { initialData: { labels: [], series: [], original: {} }, refetchInterval: 30000 }
   );
-  useEffect(() => {
-    refetch();
-  }, [option, selectedRepo]);
+
   function handleSelectData(index: number) {
     setSelectedIndex(index);
   }
+
   return (
     <Box p="4" bg="white" borderRadius="md" w="100%">
       <Flex w="100%" align={'center'}>

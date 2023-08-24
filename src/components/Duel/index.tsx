@@ -67,7 +67,7 @@ const Duel: React.FC = () => {
         return { initialData: [] };
       }
     },
-    { initialData: [] }
+    { initialData: [], refetchInterval: 30000 }
   );
 
   useEffect(() => {
@@ -95,10 +95,6 @@ const Duel: React.FC = () => {
     }
   }, [challenged, challenger]);
   
-  useEffect(() => {
-    refetch();
-  }, [selectedRepo]);
-
   return (
     <Flex bg="white" p="4" borderRadius="md">
       <VStack>
