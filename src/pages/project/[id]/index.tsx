@@ -18,6 +18,7 @@ import RefactoringsPoints from "@/components/RefactoringsPoints";
 import RefactoredFilesPath from "@/components/RefactoredFilesPath";
 import Duel from "@/components/Duel";
 import FirstAccess from "@/pages/first-access";
+import Sidebar from "@/components/Sidebar";
 export async function getServerSideProps(context) {
   const session = await getSession(context);
 
@@ -38,6 +39,7 @@ export async function getServerSideProps(context) {
 }
 
 export default function Project() {
+  const { query } = useRouter();
   const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
   const [startDate, endDate] = useTimeWindow((state) => [
@@ -63,7 +65,9 @@ export default function Project() {
           params: { startDate, endDate },
         })
         .then((response) => {
-          if (!selectedRepo) setSelectedRepo(response.data[0]?.repoUrl);
+          const repoId = query?.id;
+          const selected = response.data.find(repo => repo.repoId === repoId);
+          if (!selectedRepo) setSelectedRepo(selected.repoUrl);
           return response.data;
         });
     },
@@ -92,10 +96,6 @@ export default function Project() {
     }
   }, [selectedRepo]);
 
-  const { query } = useRouter();
-
-  const repoId = query?.id;
-
   return (
     <Box margin={0} padding={0} boxSizing="border-box" display="flex" width="100">
       <Box
@@ -112,34 +112,7 @@ export default function Project() {
           <Image src="/assets/logo.svg" width={80} height={80} />
         </Flex>
         <Divider />
-
-        <VStack w="100%">
-          <Flex
-            w="100%"
-            p="4"
-            alignItems="center"
-            justifyContent="space-between"
-          >
-            <Text fontSize="2xl" fontWeight="medium">
-              Repositories
-            </Text>
-            <Flex
-              bg="primary.50"
-              color="primary.500"
-              w="8"
-              h="8"
-              borderRadius="xl"
-              justifyContent="center"
-              alignItems="center"
-            >
-              {repos.length}
-            </Flex>
-          </Flex>
-          {repos.map((item) => (
-            <RepoItem key={item.repoId} repoId={item.repoId} repoName={item.repoName} repoUrl={item.repoUrl} />
-          ))}
-        </VStack>
-        <Profile />
+        <Sidebar repos={repos} />
       </Box>
       <Flex p="8" w="100%">
         <Flex flexDir="column" gap={4} w="100%">

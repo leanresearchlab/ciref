@@ -22,6 +22,7 @@ import {
 } from '@chakra-ui/react';
 import { useQuery } from '@tanstack/react-query';
 import { signOut, useSession } from 'next-auth/react';
+import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 import {
   RiCheckLine,
@@ -33,6 +34,7 @@ import {
 
 const Profile: React.FC = () => {
   const toast = useToast();
+  const router = useRouter();
   const { data: session } = useSession();
   // const [repos, setRepos] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -90,6 +92,7 @@ const Profile: React.FC = () => {
     ).then((r) => toast({ title: 'Repositories added successfully' }));
     setLoading(false);
     onClose();
+    router.push(`/project/${selectedRepos[0].id}`)
   }
 
   return (
