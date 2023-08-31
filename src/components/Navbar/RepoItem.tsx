@@ -7,10 +7,10 @@ import { RiGitRepositoryLine } from 'react-icons/ri';
 interface RepoItem {
   repoName: string;
   repoUrl: string;
-  repoId: number;
+  repoId: string;
 }
 
-const RepoItem: React.FC<RepoItem> = ({ repoName,repoUrl, repoId }) => {
+const RepoItem: React.FC<RepoItem> = ({ repoName, repoUrl, repoId }) => {
   const { selectedRepo, setSelectedRepo } = useSelectRepo(
     ({ selectedRepo, setSelectedRepo }) => ({
       selectedRepo,

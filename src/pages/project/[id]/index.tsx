@@ -112,7 +112,7 @@ export default function Project() {
           <Image src="/assets/logo.svg" width={80} height={80} />
         </Flex>
         <Divider />
-        <Sidebar repos={repos} />
+        <Sidebar createdRepos={repos} />
       </Box>
       <Flex p="8" w="100%">
         <Flex flexDir="column" gap={4} w="100%">
