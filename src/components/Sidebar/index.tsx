@@ -3,19 +3,17 @@ import Profile from "../Navbar/Profile";
 import RepoItem from "../Navbar/RepoItem";
 import { RiCheckLine, RiGitRepositoryLine } from "react-icons/ri";
 import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useSelectRepo } from "@/stores/repo";
 import { useQuery } from "@tanstack/react-query";
 import { apiGithub, backendApi } from "@/services/api";
 import { useSession } from "next-auth/react";
 
 type Repo = {
-  id: string;
   repoId: string;
   repoName: string;
   repoUrl: string;
   username: string;
-  active: boolean;
 };
 
 interface SidebarProps {
@@ -28,6 +26,7 @@ export default function Sidebar({ createdRepos }: SidebarProps) {
   const { data: session } = useSession();
   const [loading, setLoading] = useState(false);
   const [selectedRepos, setSelectedRepos] = useState([]);
+  const [reposToShow, setReposToShow] = useState(createdRepos);
   const { isOpen, onClose, onOpen } = useDisclosure();
   const alreadyRepos = useSelectRepo((state) => state.repos);
 
@@ -51,41 +50,68 @@ export default function Sidebar({ createdRepos }: SidebarProps) {
   useEffect(() => {
     refetch();
   }, [alreadyRepos]);
-
+  
   function isSelected(repo: any) {
     const a = !!selectedRepos.find((r) => r.id === repo.id);
     return a;
   }
-
+  
   function add(repo: any) {
     const findRepo = selectedRepos.find((r) => r.id === repo.id);
     if (findRepo) return;
     setSelectedRepos([...selectedRepos, repo]);
+    // createdRepos.push({
+    //   repoId: repo.id,
+    //   repoUrl: repo.clone_url,
+    //   repoName: repo.name,
+    //   username: session?.user.username,
+    // })
   }
 
   function remove(repo: any) {
-    const findRepo = selectedRepos.find((r) => r.id === repo.id);
-    if (!findRepo) return;
+    console.log(repo)
     setSelectedRepos(selectedRepos.filter((r) => r.id !== repo.id));
+    // const updatedRepos = createdRepos.filter((item) => item.repoId !== repo.id)
+    // setReposToShow(updatedRepos)
+  }
+
+  function handleCloseModal() {
+    onClose();
+    setSelectedRepos([]);
   }
 
   function handleCreateRepos() {
     setLoading(true);
-    Promise.allSettled(
-      selectedRepos.map((r) =>
-        backendApi.post('/repo', {
-          repoId: r.id,
-          repoUrl: r.clone_url,
-          repoName: r.name,
-          username: session?.user.username,
-        })
-      )
-    ).then((r) => toast({ title: 'Repositories added successfully' }));
-    setLoading(false);
-    onClose();
-    router.push(`/project/${selectedRepos[0].id}`)
-  }
 
+    const newRepos = [];
+
+    selectedRepos.forEach(async (repo) => {
+      try {
+        const response = await backendApi.post("/repo", {
+          repoId: repo.id,
+          repoUrl: repo.clone_url,
+          repoName: repo.name,
+          username: session?.user.username,
+        });
+
+        newRepos.push(response.data);
+        setReposToShow([...reposToShow, ...newRepos])
+      } catch(error) {
+        console.error('Error adding repos.', error);
+      }
+    });
+    
+    console.log(reposToShow)
+    
+    toast({ title: 'Repositories added successfully' })
+    setLoading(false);
+    onClose();    
+    // router.push(`/project/${selectedRepos[0].id}`)
+    
+    // setSelectedRepos([]);
+  }
+  
+  console.log(selectedRepos, reposToShow);
   return (
     <>
       <VStack w="100%">
@@ -113,6 +139,9 @@ export default function Sidebar({ createdRepos }: SidebarProps) {
         {createdRepos.map((item) => (
           <RepoItem key={item.repoId} repoId={item.repoId} repoName={item.repoName} repoUrl={item.repoUrl} />
         ))}
+        {selectedRepos.map((item) => (
+          <RepoItem key={item.id} repoId={item.id} repoName={item.name} repoUrl={item.svn_url} />
+        ))}
       </VStack>
       <VStack w="100%" p="4" spacing="8">
         <Divider></Divider>
@@ -125,7 +154,7 @@ export default function Sidebar({ createdRepos }: SidebarProps) {
         >
           Add Repository
         </Button>
-        <Modal isOpen={isOpen} onClose={onClose}>
+        <Modal isOpen={isOpen} onClose={handleCloseModal}>
           <ModalOverlay />
           <ModalContent width="100vw">
             <ModalHeader>Add repository</ModalHeader>
@@ -148,7 +177,7 @@ export default function Sidebar({ createdRepos }: SidebarProps) {
             </ModalBody>
 
             <ModalFooter>
-              <Button variant="ghost" mr={3} onClick={onClose}>
+              <Button variant="ghost" mr={3} onClick={handleCloseModal}>
                 Close
               </Button>
               <Button
