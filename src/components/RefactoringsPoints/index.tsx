@@ -1,12 +1,6 @@
 import { backendApi } from '@/services/api';
 import { useSelectRepo } from '@/stores/repo';
-import Chart from 'react-apexcharts';
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
   Avatar,
   Badge,
   Box,
@@ -21,9 +15,7 @@ import { useQuery } from '@tanstack/react-query';
 import React, { useEffect } from 'react';
 import { useTimeWindow } from '@/stores/timeWindow';
 
-// import { Container } from './styles';
-
-const RefactByAuthorsPoints: React.FC = () => {
+const RefactoringsPoints: React.FC = () => {
   const { repos, selectedRepo } = useSelectRepo(({ repos, selectedRepo }) => ({
     repos,
     selectedRepo,
@@ -33,25 +25,32 @@ const RefactByAuthorsPoints: React.FC = () => {
     state.endDate,
     state.option
   ]);
-  const { data, isFetching,refetch } = useQuery(
+  const { data } = useQuery(
     ['refacts-by-authors-points'],
     async () => {
       const findRepoInfo = repos.find((r) => r.repoUrl === selectedRepo);
       
-      return backendApi
-        .get('/refacts/points/users', {
+      if(!findRepoInfo) {
+        return { initialData: [] };
+      }
+
+      try {
+        const response = await backendApi.get('/refacts/points/users', {
           params: {
             repoUrl: findRepoInfo.repoUrl,
-            startDate,endDate
-          },
-        })
-        .then((res) => res.data);
+            startDate, endDate
+          }
+        });
+
+        return response.data;
+      } catch(error) {
+        console.error('Error fetching data from API');
+        return { initialData: [] };
+      }
     },
-    { initialData:[] }
+    { initialData:[], refetchInterval: 30000 }
   );
 
-  useEffect(()=>{refetch()},[option,selectedRepo])
-  
   return (
     <Flex w="20%" h="auto">
       <Box w="100%" bg="white" borderRadius="md" p="4">
@@ -72,7 +71,7 @@ const RefactByAuthorsPoints: React.FC = () => {
             <VStack p="2" spacing="4">
               {data &&
                 data.slice(1, data.length).map((i) => (
-                  <HStack w="100%">
+                  <HStack w="100%" key={i.user.login}>
                     <Avatar size="xs" src={i.user.avatar} />
                     <Text fontSize={'sm'}>{i?.user.login}</Text>
                     <Badge variant="subtle" colorScheme="green">
@@ -91,4 +90,4 @@ const RefactByAuthorsPoints: React.FC = () => {
   );
 };
 
-export default RefactByAuthorsPoints;
+export default RefactoringsPoints;

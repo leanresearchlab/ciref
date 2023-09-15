@@ -7,9 +7,10 @@ import React, { useEffect } from 'react';
 import { format } from 'date-fns';
 import ptBr from 'date-fns/locale/pt-BR';
 import dynamic from 'next/dynamic';
+
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-const RefactsByTime: React.FC = () => {
+const RefactorHistory: React.FC = () => {
   const { repos, selectedRepo } = useSelectRepo(({ repos, selectedRepo }) => ({
     repos,
     selectedRepo,
@@ -19,37 +20,43 @@ const RefactsByTime: React.FC = () => {
     state.endDate,
     state.option,
   ]);
-  const { data, isFetching, refetch } = useQuery(
+  const { data } = useQuery(
     ['refacts-by-time'],
     async () => {
       const findRepoInfo = repos.find((r) => r.repoUrl === selectedRepo);
-      return backendApi
-        .get('/refacts/time', {
+
+      if (!findRepoInfo) {
+        return { dates: [], values: [] };
+      }
+      try {
+        const response = await backendApi.get('/refacts/time', {
           params: {
             repoId: findRepoInfo.repoId,
             startDate,
             endDate,
           },
-        })
-        .then((res) => {
-          let dates = [];
-          let values = [];
-          res.data.forEach((i) => {
-            dates.push(
-              format(new Date(i.commit_date), "dd 'de' MMM, yyyy", {
-                locale: ptBr,
-              })
-            );
-            values.push(i._count.id);
-          });
-          return { dates, values };
         });
+
+        const dates = [];
+        const values = [];
+
+        response.data.forEach((i) => {
+          dates.push(
+            format(new Date(i.commit_date), "dd 'de' MMM, yyyy", {
+              locale: ptBr,
+            })
+          );
+          values.push(i._count.id);
+        });
+
+        return { dates, values };
+      } catch (error) {
+        console.error('Error fetching data from API');
+        return { dates: [], values: [] };
+      }
     },
-    { initialData: { dates: [], values: [] } }
+    { initialData: { dates: [], values: [] }, refetchInterval: 30000 }
   );
-  useEffect(() => {
-    refetch();
-  }, [option, selectedRepo]);
 
   return (
     <Flex w="100%" bg="white" p="4" borderRadius="md" flexDirection="column">
@@ -81,9 +88,9 @@ const RefactsByTime: React.FC = () => {
             curve: 'stepline',
           },
           grid: {
-            xaxis:{
-              lines:{
-                show:true
+            xaxis: {
+              lines: {
+                show: true
               }
             },
             yaxis: {
@@ -105,4 +112,4 @@ const RefactsByTime: React.FC = () => {
   );
 };
 
-export default RefactsByTime;
+export default RefactorHistory;

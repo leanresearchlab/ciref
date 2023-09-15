@@ -1,14 +1,16 @@
 import { useSelectRepo } from '@/stores/repo';
 import { Box, Flex, Icon, Text } from '@chakra-ui/react';
+import { useRouter } from 'next/router';
 import React from 'react';
 import { RiGitRepositoryLine } from 'react-icons/ri';
 
 interface RepoItem {
   repoName: string;
   repoUrl: string;
+  repoId: string;
 }
 
-const RepoItem: React.FC<RepoItem> = ({ repoName,repoUrl }) => {
+const RepoItem: React.FC<RepoItem> = ({ repoName, repoUrl, repoId }) => {
   const { selectedRepo, setSelectedRepo } = useSelectRepo(
     ({ selectedRepo, setSelectedRepo }) => ({
       selectedRepo,
@@ -16,6 +18,7 @@ const RepoItem: React.FC<RepoItem> = ({ repoName,repoUrl }) => {
     })
   );
   const active = repoUrl === selectedRepo;
+  const router = useRouter();
 
   return (
     <Flex
@@ -25,7 +28,10 @@ const RepoItem: React.FC<RepoItem> = ({ repoName,repoUrl }) => {
       align="center"
       justify="center"
       cursor="pointer"
-      onClick={() => setSelectedRepo(repoUrl)}
+      onClick={() => {
+        setSelectedRepo(repoUrl)
+        router.push(`/project/${repoId}`)
+      }}
       bgGradient={
         active ? 'linear(to-r, primary.50, transparent)' : 'transparent'
       }

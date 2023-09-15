@@ -3,7 +3,6 @@ import { useSelectRepo } from '@/stores/repo';
 import { useTimeWindow } from '@/stores/timeWindow';
 import { useQuery } from '@tanstack/react-query';
 import dynamic from 'next/dynamic';
-import { format } from 'date-fns';
 import React, { useEffect, useState } from 'react';
 import {
   Badge,
@@ -11,7 +10,6 @@ import {
   Center,
   Divider,
   Flex,
-  HStack,
   Spacer,
   Tag,
   TagLabel,
@@ -22,7 +20,7 @@ import Image from 'next/image';
 
 const Chart = dynamic(() => import('react-apexcharts'), { ssr: false });
 
-const RefactsByType: React.FC = () => {
+const RefactoringsTypes: React.FC = () => {
   const [selectedIndex, setSelectedIndex] = useState(-1);
   const { repos, selectedRepo } = useSelectRepo(({ repos, selectedRepo }) => ({
     repos,
@@ -33,32 +31,38 @@ const RefactsByType: React.FC = () => {
     state.endDate,
     state.option,
   ]);
-  const { data, isFetching, refetch } = useQuery(
+  const { data } = useQuery(
     ['refacts-by-type'],
     async () => {
       const findRepoInfo = repos.find((r) => r.repoUrl === selectedRepo);
-      return backendApi
-        .get('/info', {
+
+      if(!findRepoInfo) {
+        return { labels: [], series: [], original: {} };
+      }
+      try {
+        const response = await backendApi.get('/info', {
           params: {
             url: findRepoInfo.repoUrl,
             startDate,
             endDate,
           },
-        })
-        .then((res) => {
-          const labels = Object.keys(res.data);
-          const series = Object.values(res.data).map((i: any) => i.total);
-          return { labels, series, original: res.data };
         });
+        const labels = Object.keys(response.data);
+        const series = Object.values(response.data).map((i: any) => i.total);
+        
+        return { labels, series, original: response.data };
+      } catch(error) {
+        console.error('Error fetching data from API');
+        return { labels: [], series: [], original: {} };
+      }
     },
-    { initialData: { labels: [], series: [], original: {} } }
+    { initialData: { labels: [], series: [], original: {} }, refetchInterval: 30000 }
   );
-  useEffect(() => {
-    refetch();
-  }, [option, selectedRepo]);
+
   function handleSelectData(index: number) {
     setSelectedIndex(index);
   }
+
   return (
     <Box p="4" bg="white" borderRadius="md" w="100%">
       <Flex w="100%" align={'center'}>
@@ -197,4 +201,4 @@ const RefactsByType: React.FC = () => {
   );
 };
 
-export default RefactsByType;
+export default RefactoringsTypes;

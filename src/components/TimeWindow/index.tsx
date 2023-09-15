@@ -9,7 +9,7 @@ import {
   endOfWeek,
 } from 'date-fns';
 
-const TimeWindows: React.FC = () => {
+const TimeWindow: React.FC = () => {
   const [
     option,
     setOption,
@@ -83,4 +83,4 @@ const TimeWindows: React.FC = () => {
   );
 };
 
-export default TimeWindows;
+export default TimeWindow;

@@ -14,7 +14,6 @@ import {
   DrawerHeader,
   DrawerOverlay,
   Flex,
-  HStack,
   SimpleGrid,
   Slider,
   SliderFilledTrack,
@@ -29,7 +28,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import React, { useRef, useState } from 'react';
 import { RiListOrdered } from 'react-icons/ri';
 
-const RefactsOrderDrawer: React.FC = () => {
+const RefactoringsDrawer: React.FC = () => {
   const [weights, setWeights, reset] = useCreateWeights((state) => [
     state.weights,
     state.setWeights,
@@ -153,6 +152,7 @@ const RefactsOrderDrawer: React.FC = () => {
                   w="100%"
                   columns={2}
                   h="12"
+                  key={i}
                 >
                   <Text>{i}</Text>
                   <Slider
@@ -213,4 +213,4 @@ const RefactsOrderDrawer: React.FC = () => {
   );
 };
 
-export default RefactsOrderDrawer;
+export default RefactoringsDrawer;

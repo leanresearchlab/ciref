@@ -1,12 +1,6 @@
 import { backendApi } from '@/services/api';
 import { useSelectRepo } from '@/stores/repo';
-import Chart from 'react-apexcharts';
 import {
-  Accordion,
-  AccordionButton,
-  AccordionIcon,
-  AccordionItem,
-  AccordionPanel,
   Avatar,
   Badge,
   Box,
@@ -25,8 +19,7 @@ import React, { useEffect } from 'react';
 import Image from 'next/image';
 import { useTimeWindow } from '@/stores/timeWindow';
 
-
-const RefactByAuthors: React.FC = () => {
+const RefactoringsAuthors: React.FC = () => {
   const { repos, selectedRepo } = useSelectRepo(({ repos, selectedRepo }) => ({
     repos,
     selectedRepo,
@@ -36,24 +29,30 @@ const RefactByAuthors: React.FC = () => {
     state.endDate,
     state.option
   ]);
-  const { data, isFetching,refetch } = useQuery(
+  const { data, isFetching } = useQuery(
     ['refacts-by-authors'],
     async () => {
       const findRepoInfo = repos.find((r) => r.repoUrl === selectedRepo);
       
-      return backendApi
-        .get('/refacts/users', {
+      if (!findRepoInfo) {
+        return { initialData: [] };
+      }
+      try {
+        const response = await backendApi.get('/refacts/users', {
           params: {
             repoUrl: findRepoInfo.repoUrl,
             startDate,endDate
           },
-        })
-        .then((res) => res.data);
-    },
-    { initialData: [] }
-  );
+        });
 
-  useEffect(()=>{refetch()},[option,selectedRepo])
+        return response.data;
+      } catch (error) {
+        console.error('Error fetching data from API');
+        return { initialData: [] };
+      }
+    },
+    { initialData: [], refetchInterval: 30000 }
+  );
 
   return (
     <Flex w="20%">
@@ -88,7 +87,7 @@ const RefactByAuthors: React.FC = () => {
                 <VStack p="2" spacing="4">
                   {data &&
                     data.slice(1, data.length).map((i) => (
-                      <HStack w="100%">
+                      <HStack w="100%" key={i.user.login}>
                         <Avatar size="xs" src={i.user.avatar} />
                         <Text fontSize={'sm'}>{i?.user.login}</Text>
                         <Badge variant="subtle" colorScheme="green">
@@ -110,4 +109,4 @@ const RefactByAuthors: React.FC = () => {
   );
 };
 
-export default RefactByAuthors;
+export default RefactoringsAuthors;

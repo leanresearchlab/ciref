@@ -1,6 +1,5 @@
 import { Box, Button, Text } from '@chakra-ui/react';
 import { getSession, signIn } from 'next-auth/react';
-import { RiGithubFill, RiGithubLine } from 'react-icons/ri';
 
 export async function getServerSideProps(context) {
   const session = await getSession(context);
@@ -8,7 +7,7 @@ export async function getServerSideProps(context) {
   if (session) {
     return {
       redirect: {
-        destination: '/',
+        destination: '/dashboard',
         permanent: false,
       },
     };
@@ -19,7 +18,7 @@ export async function getServerSideProps(context) {
   };
 }
 
-export default function Home() {
+export default function Login() {
   return (
     <Box
       css={{
