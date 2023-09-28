@@ -55,7 +55,7 @@ const RefactorHistory: React.FC = () => {
         return { dates: [], values: [] };
       }
     },
-    { initialData: { dates: [], values: [] }, refetchInterval: 30000 }
+    { initialData: { dates: [], values: [] }, refetchInterval: 10000 }
   );
 
   return (
